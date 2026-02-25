@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dx61vnw4hk0t3"]
+
+[node name="Background" type="Node2D" unique_id=1060506787]
+
+[node name="Parallax2D" type="Parallax2D" parent="." unique_id=1597095884]
