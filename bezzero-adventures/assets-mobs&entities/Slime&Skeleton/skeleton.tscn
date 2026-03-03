@@ -1,10 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://beucstt68h3d6"]
+[gd_scene load_steps=18 format=3 uid="uid://beucstt68h3d6"]
 
 [ext_resource type="Texture2D" uid="uid://b6o80ii4k1pgc" path="res://assets-mobs&entities/Slime&Skeleton/Skeleton.png" id="1_gejsy"]
 [ext_resource type="Script" uid="uid://crmiri7wj1mh8" path="res://assets-mobs&entities/Slime&Skeleton/skeleton.gd" id="1_no3lc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gejsy"]
-size = Vector2(12.5, 26.5)
+size = Vector2(11, 14)
 
 [sub_resource type="Animation" id="Animation_auetw"]
 length = 0.001
@@ -250,10 +250,16 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_no3lc"]
 radius = 82.006096
 
-[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("_texture", "_animation") groups=["enemy"]]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_skeleton_health_bg"]
+bg_color = Color(0.12, 0.12, 0.12, 0.9)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_skeleton_health_fill"]
+bg_color = Color(0.9, 0.2, 0.2, 1)
+
+[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("_animation", "_health_bar") groups=["enemy"]]
 script = ExtResource("1_no3lc")
-_texture = NodePath("Sprite2D")
 _animation = NodePath("AnimationPlayer")
+_health_bar = NodePath("HealthBar")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_gejsy")
@@ -263,7 +269,7 @@ vframes = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 show_behind_parent = true
-position = Vector2(-0.75, -0.25)
+position = Vector2(-0.5, 4)
 shape = SubResource("RectangleShape2D_gejsy")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -277,6 +283,17 @@ libraries = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
 show_behind_parent = true
 shape = SubResource("CircleShape2D_no3lc")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = -16.0
+offset_top = -24.0
+offset_right = 16.0
+offset_bottom = -18.0
+theme_override_styles/background = SubResource("StyleBoxFlat_skeleton_health_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_skeleton_health_fill")
+step = 1.0
+value = 100.0
+show_percentage = false
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_finished"]
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]

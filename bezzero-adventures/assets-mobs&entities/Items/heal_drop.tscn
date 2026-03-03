@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://assets-mobs&entities/Items/heal_drop.gd" id="1_heal"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_heal"]
+radius = 7.0
+
+[sub_resource type="Gradient" id="Gradient_bottle_label"]
+offsets = PackedFloat32Array(0.25, 0.75)
+colors = PackedColorArray(0.76, 0.92, 1, 0.9, 0.2, 0.56, 0.86, 0.9)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bottle_label"]
+gradient = SubResource("Gradient_bottle_label")
+
+[node name="HealDrop" type="Area2D"]
+script = ExtResource("1_heal")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_heal")
+
+[node name="BottleBody" type="Polygon2D" parent="."]
+color = Color(0.92, 0.86, 0.68, 0.95)
+polygon = PackedVector2Array(-3, -5, 3, -5, 3.8, -1.5, 3.8, 5, -3.8, 5, -3.8, -1.5)
+
+[node name="Water" type="Polygon2D" parent="."]
+position = Vector2(0, 0.8)
+color = Color(0.33, 0.73, 0.95, 0.9)
+polygon = PackedVector2Array(-2.7, -0.7, 2.7, -0.7, 2.7, 3.8, -2.7, 3.8)
+texture = SubResource("GradientTexture1D_bottle_label")
+
+[node name="BottleNeck" type="Polygon2D" parent="."]
+color = Color(0.87, 0.78, 0.55, 0.95)
+polygon = PackedVector2Array(-1.5, -7.5, 1.5, -7.5, 1.5, -5.2, -1.5, -5.2)
+
+[node name="BottleCap" type="Polygon2D" parent="."]
+color = Color(0.62, 0.35, 0.15, 0.95)
+polygon = PackedVector2Array(-1.9, -9.2, 1.9, -9.2, 1.9, -7.6, -1.9, -7.6)

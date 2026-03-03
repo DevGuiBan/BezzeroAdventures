@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://b8mbjubg0b4wx"]
+[gd_scene load_steps=43 format=3 uid="uid://b8mbjubg0b4wx"]
 
 [ext_resource type="Script" uid="uid://bs2bcxeroyakd" path="res://assets-mobs&entities/player/scripts/player.gd" id="1_2dtww"]
 [ext_resource type="Texture2D" uid="uid://nymosa857ibx" path="res://assets-mobs&entities/player/player.png" id="1_86v7b"]
@@ -401,6 +401,22 @@ tracks/5/keys = {
 "values": [true, false, true]
 }
 
+[sub_resource type="Animation" id="Animation_tlq30"]
+resource_name = "death"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [54, 55, 56]
+}
+
 [sub_resource type="Animation" id="Animation_2dtww"]
 resource_name = "idle_down"
 length = 0.6
@@ -730,22 +746,6 @@ tracks/2/keys = {
 "values": [false]
 }
 
-[sub_resource type="Animation" id="Animation_tlq30"]
-resource_name = "death"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [54, 55, 56]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4qmjx"]
 _data = {
 &"RESET": SubResource("Animation_qxxfi"),
@@ -867,10 +867,17 @@ states/walk/node = SubResource("AnimationNodeBlendSpace2D_rkgdj")
 states/walk/position = Vector2(365, 160)
 graph_offset = Vector2(0, -57.4045)
 
-[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("_animation_tree", "_attack_timer") groups=["character"]]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_player_health_bg"]
+bg_color = Color(0.12, 0.12, 0.12, 0.9)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_player_health_fill"]
+bg_color = Color(0.2, 0.85, 0.2, 1)
+
+[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("_animation_tree", "_attack_timer", "_health_bar") groups=["character"]]
 script = ExtResource("1_2dtww")
 _animation_tree = NodePath("AnimationTree")
 _attack_timer = NodePath("AttackTimer")
+_health_bar = NodePath("HealthBar")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-0.5, -17)
@@ -909,6 +916,17 @@ shape = SubResource("RectangleShape2D_2dtww")
 disabled = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = -16.0
+offset_top = -38.0
+offset_right = 16.0
+offset_bottom = -32.0
+theme_override_styles/background = SubResource("StyleBoxFlat_player_health_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_player_health_fill")
+step = 1.0
+value = 100.0
+show_percentage = false
 
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
 [connection signal="body_entered" from="AttackArea" to="." method="_on_attack_area_body_entered"]
